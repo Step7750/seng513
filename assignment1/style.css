@@ -37,3 +37,42 @@ html, body {
 .hint-text {
     opacity: 0.5;
 }
+
+.menu {
+    margin: 20px auto 20px auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+.content {
+    width: 100%;
+    max-width: 900px;
+    background-color: #424242;
+    margin: 0 auto;
+    padding: 50px 20px 25px 20px;
+}
+
+.news-item {
+    margin-bottom: 50px;
+}
+
+.news-title {
+    color: #FFFFFF;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.news-item > .date {
+    float: right;
+    font-size: 18px;
+}
+
+.news-item > .author {
+    float: left;
+    font-size: 18px;
+}
+
+.news-item > .post {
+    margin-top: 10px;
+    font-size: 16px;
+}
