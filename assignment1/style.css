@@ -92,3 +92,10 @@ html, body {
 .news-item > img, .post-img {
     width: 100%;
 }
+
+.meme-img {
+    float: left;
+    max-width: 250px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
