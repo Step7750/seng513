@@ -76,3 +76,19 @@ html, body {
     margin-top: 10px;
     font-size: 16px;
 }
+
+.price-table {
+    text-align: center;
+    border: 1px solid #212121;
+    border-collapse: collapse;
+}
+
+.price-table > th, td {
+    padding: 7px 7px 7px 7px;
+
+    border: 1px solid #212121;
+}
+
+.news-item > img, .post-img {
+    width: 100%;
+}
