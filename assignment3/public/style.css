@@ -7,16 +7,18 @@ body, html {
 }
 
 .primary-text {
-    opacity: 1.0;
+    color: rgba(255, 255, 255, 1.0);
+}
+
+.secondary-text {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .info-message {
-    opacity: 0.7;
-    color: #FFFFFF;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .error-message {
-    opacity: 1.0;
     color: tomato;
 }
 

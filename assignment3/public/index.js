@@ -73,7 +73,12 @@ function displayMessage(o) {
 socket.on('nick', (nick) => {
     id = nick.id;
     $('#nickname').text(nick.nickname);
-    displayInfo(`You are now ${nick.nickname}`);
+
+    // Append to messages
+    const div = $('<div></div>').attr('class', 'secondary-text').append('You are now ');
+    const span = $('<span></span>').attr('class', 'primary-text').css('color', nick.colour).text(nick.nickname);
+    div.append(span);
+    $('.messages').append(div);
 
     if (nick.cookie) {
         setCookie('session', nick.cookie);
@@ -99,8 +104,11 @@ socket.on('error', (err) => {
 });
 
 socket.on('users', (users) => {
-    for (const user of users) {
+    $('.users').empty();
 
+    for (const user of users) {
+        const u = $('<div></div>').css('color', user.colour).text(user.nickname);
+        $('.users').append(u);
     }
 });
 

@@ -5,6 +5,7 @@ class User {
         this.nickname_ = nickname;
 
         this.emitState();
+        this.users.emitState();
     }
 
     get nickname() {
@@ -22,6 +23,7 @@ class User {
         }
 
         this.emitState();
+        this.users.emitState();
     }
 
     set online(o) {
@@ -32,6 +34,10 @@ class User {
         if (this.online_ !== prev) {
             this.users.emitState();
         }
+    }
+
+    get online() {
+        return this.online_ || false;
     }
 
     get colour() {
