@@ -3,7 +3,6 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
-const utils = require('./Utils');
 const messages = new (require('./Messages'))(io);
 const users = new (require('./Users'))(io);
 
@@ -29,11 +28,15 @@ io.on('connection', (socket) => {
         user.nickname = newNick;
     });
 
-    socket.on('nickcolour', (colour) => {
+    socket.on('nickcolour', ([colour]) => {
         user.colour = colour;
     });
 
     socket.on('disconnect', () => {
         user.online = false;
     });
+
+    socket.on('error', () => {
+        user.online = false;
+    })
 });
