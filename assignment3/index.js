@@ -5,6 +5,7 @@ const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 const utils = require('./Utils');
 const messages = new (require('./Messages'))(io);
+const users = new (require('./Users'))(io);
 
 http.listen(port, () => {
     console.log('listening on port', port);
@@ -14,13 +15,25 @@ app.use(express.static(__dirname + '/public'));
 
 // listen to 'chat' messages
 io.on('connection', (socket) => {
-    const nick = utils.getRandomNick();
-    socket.nickname = nick;
+    const user = users.createUser(socket);
 
-    socket.emit('nickname', socket.nickname);
+    user.online = true;
+
     socket.emit('messages', messages.getAll());
 
     socket.on('message', (msg) => {
-        messages.add(socket, msg);
+        messages.add(user, msg);
+    });
+
+    socket.on('nick', ([newNick]) => {
+        user.nickname = newNick;
+    });
+
+    socket.on('nickcolour', (colour) => {
+        user.colour = colour;
+    });
+
+    socket.on('disconnect', () => {
+        user.online = false;
     });
 });
