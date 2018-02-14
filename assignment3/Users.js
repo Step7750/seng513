@@ -34,6 +34,10 @@ class Users {
         return this.users.findIndex((user) => user.id === id) > -1;
     }
 
+    isDuplicateName(name) {
+        return this.users.findIndex((user) => user.nickname === name) > -1;
+    }
+
     generateUniqueId() {
         let id;
 

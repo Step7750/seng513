@@ -20,7 +20,6 @@ io.on('connection', (socket) => {
     const user = users.createUser(socket);
 
     user.online = true;
-
     socket.emit('messages', messages.getAll());
 
     socket.on('message', (msg) => {
@@ -28,7 +27,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('nick', ([newNick]) => {
-        user.nickname = newNick;
+        if (!users.isDuplicateName(newNick)) {
+            user.nickname = newNick;
+        }
+        else {
+            socket.emit('err', `${newNick} is already taken!`);
+        }
     });
 
     socket.on('nickcolour', ([colour]) => {

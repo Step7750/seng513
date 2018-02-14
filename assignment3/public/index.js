@@ -57,7 +57,7 @@ function displayMessage(o) {
     const msg = $('<span></span>').text(o.msg);
 
     // Bold the username and text if this is our message
-    if (o.nickname === id) {
+    if (o.id === id) {
         msg.css('font-weight', 'bold');
         span.css('font-weight', 'bold');
     }
@@ -99,7 +99,8 @@ socket.on('info', (info) => {
     displayInfo(info);
 });
 
-socket.on('error', (err) => {
+socket.on('err', (err) => {
+    console.log('got error');
     displayError(err);
 });
 
