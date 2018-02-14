@@ -11,7 +11,7 @@ class Users {
         // Check if the user already exists
         const u = this.getUserFromSession(socket.request.cookies.session);
 
-        if (u) {
+        if (u && !u.online) {
             u.socket = socket;
             return u;
         }
