@@ -44,7 +44,7 @@ body, html {
     padding: 10px;
 }
 
-.send {
+#send-input {
     grid-area: send;
 }
 
