@@ -1,5 +1,3 @@
-const utils = require('./Utils');
-
 class Messages {
     constructor(io) {
         this.io = io;
