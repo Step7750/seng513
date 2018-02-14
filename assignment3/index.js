@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
         messages.add(user, msg);
     });
 
-    socket.on('nick', ([newNick]) => {
+    socket.on('nick', (newNick) => {
         if (!users.isDuplicateName(newNick)) {
             user.nickname = newNick;
         }
@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('nickcolour', ([colour]) => {
+    socket.on('nickcolour', (colour) => {
         user.colour = colour;
     });
 

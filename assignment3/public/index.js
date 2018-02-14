@@ -100,7 +100,6 @@ socket.on('info', (info) => {
 });
 
 socket.on('err', (err) => {
-    console.log('got error');
     displayError(err);
 });
 
@@ -132,12 +131,12 @@ $('#send-input').on('keydown', function(e) {
                 const command = s[0];
                 const params = commands[command];
 
-                if (params && s.length - 1 === params.length) {
+                if (params && s.length >= 2) {
                     displayInfo(msg);
-                    socket.emit(command, s.slice(1));
+                    socket.emit(command, s.slice(1).join(' '));
                 }
                 else {
-                    displayError(`Invalid Command: ${command}`);
+                    displayError(`Invalid Command: ${msg}`);
                 }
             }
             else {
