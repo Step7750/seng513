@@ -1,0 +1,57 @@
+body, html {
+    background-color: #303030;
+    color: white;
+    font-family: Arial;
+    padding: 0;
+    margin: 0;
+}
+.wrapper {
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.container {
+    display: grid;
+    grid-template-rows: 15px 1fr 30px;
+    grid-template-columns: 1fr 200px;
+    grid-template-areas: "name users-title"
+                         "messages users"
+                         "send users";
+    grid-gap: 10px 10px;
+    height: 100%;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        grid-template-areas: "name"
+                             "messages"
+                             "send"
+                             "users-title"
+                             "users";
+        grid-template-columns: 100%;
+        grid-template-rows: 15px 2fr 30px 30px 1fr;
+    }
+}
+
+.name {
+    grid-area: name;
+}
+
+.messages {
+    grid-area: messages;
+    background-color: #212121;
+    padding: 10px;
+}
+
+.send {
+    grid-area: send;
+}
+
+.users-title {
+    grid-area: users-title;
+}
+
+.users {
+    grid-area: users;
+}
