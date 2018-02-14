@@ -80,8 +80,8 @@ socket.on('nick', (nick) => {
     div.append(span);
     $('.messages').append(div);
 
-    if (nick.cookie) {
-        setCookie('session', nick.cookie);
+    if (nick.session) {
+        setCookie('session', nick.session);
     }
 });
 

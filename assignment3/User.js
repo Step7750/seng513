@@ -12,6 +12,16 @@ class User {
         return this.nickname_ || `USER-${this.id}`;
     }
 
+    set socket(s) {
+        // New socket
+        this.socket_ = s;
+        this.emitState(true);
+    }
+
+    get socket() {
+        return this.socket_;
+    }
+
     set colour(colour) {
         colour = colour || '#FFFFFF';
 
@@ -46,24 +56,21 @@ class User {
 
     constructor(users, socket, id) {
         this.users = users;
-        this.socket = socket;
         this.id = id;
-        this.cookie = utils.genAlphanumericSeq(32);
-
-        // Emit this new state to the user
-        this.emitState(true);
+        this.session = utils.genAlphanumericSeq(32);
+        this.socket = socket;
     }
 
-    emitState(cookie = false) {
-        this.socket.emit('nick', this.serialize(cookie));
+    emitState(session = false) {
+        this.socket.emit('nick', this.serialize(session));
     }
 
-    serialize(cookie = false) {
+    serialize(session = false) {
         return {
             id: this.id,
             nickname: this.nickname,
             colour: this.colour,
-            cookie: (cookie) ? this.cookie : ''
+            session: (session) ? this.session : ''
         }
     }
 }

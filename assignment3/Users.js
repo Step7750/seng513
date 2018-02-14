@@ -8,12 +8,26 @@ class Users {
     }
 
     createUser(socket) {
+        // Check if the user already exists
+        const u = this.getUserFromSession(socket.request.cookies.session);
+
+        if (u) {
+            u.socket = socket;
+            return u;
+        }
+
         const id = this.generateUniqueId();
 
         const user = new User(this, socket, id);
         this.users.push(user);
 
         return user;
+    }
+
+    getUserFromSession(session) {
+        if (!session) return;
+
+        return this.users.find((user) => user.session === session);
     }
 
     isDuplicateId(id) {

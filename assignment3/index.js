@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('socket.io-cookie-parser');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
@@ -11,6 +12,8 @@ http.listen(port, () => {
 });
 
 app.use(express.static(__dirname + '/public'));
+
+io.use(cookieParser());
 
 // listen to 'chat' messages
 io.on('connection', (socket) => {
