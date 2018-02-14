@@ -6,8 +6,8 @@ class Messages {
         this.messages = [];
     }
 
-    add(socket, msg) {
-        const obj = Object.assign(utils.serializeSocket(socket), {time: Date.now(), msg});
+    add(user, msg) {
+        const obj = Object.assign(user.serialize(), {time: Date.now(), msg});
         this.messages.push(obj);
         this.io.emit('message', obj);
     }
