@@ -1,5 +1,48 @@
 const socket = io();
 
+let id;
+
+const commands = {
+    'nick': [
+        'new nickname'
+    ],
+    'nickcolour': [
+        'rrggbb'
+    ]
+};
+
+function serializeCommand(name, params) {
+    let s = `/${name}`;
+
+    for (const param of params) {
+        s += ` <${param}>`;
+    }
+
+    return s;
+}
+
+// Adapted from https://stackoverflow.com/a/24103596
+function setCookie(name,value,days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = `; expires=${date.toUTCString()}`;
+    }
+    document.cookie = `${name}=${value || ''}${expires}; path=/`;
+}
+
+
+function displayInfo(text) {
+    const div = $('<div></div>').attr('class', 'info-message').text(text);
+    div.appendTo('.messages');
+}
+
+function displayError(err) {
+    const div = $('<div></div>').attr('class', 'error-message').text(err);
+    div.appendTo('.messages');
+}
+
 function displayMessage(o) {
     const div = $('<div></div>').attr('class', 'message');
     const time = new Date(o.time).toLocaleTimeString();
@@ -7,14 +50,34 @@ function displayMessage(o) {
     div.append(`${time} `);
 
     const span = $('<span></span>').css('color',  o.colour).text(o.nickname);
-    div.append(span);
-    div.append(`: ${o.msg}`);
 
+    div.append(span);
+    div.append(': ');
+
+    const msg = $('<span></span>').text(o.msg);
+
+    // Bold the username and text if this is our message
+    if (o.nickname === id) {
+        msg.css('font-weight', 'bold');
+        span.css('font-weight', 'bold');
+    }
+
+    div.append(msg);
     div.appendTo('.messages');
+
+    // Scroll to bottom of messages
+    const messages = $('.messages');
+    messages.scrollTop(messages.prop('scrollHeight'));
 }
 
-socket.on('nickname', (name) => {
-   $('#nickname').text(name);
+socket.on('nick', (nick) => {
+    id = nick.id;
+    $('#nickname').text(nick.nickname);
+    displayInfo(`You are now ${nick.nickname}`);
+
+    if (nick.cookie) {
+        setCookie('session', nick.cookie);
+    }
 });
 
 socket.on('message', (message) => {
@@ -27,14 +90,25 @@ socket.on('messages', (messages) => {
     }
 });
 
+socket.on('info', (info) => {
+    displayInfo(info);
+});
+
+socket.on('error', (err) => {
+    displayError(err);
+});
+
 socket.on('users', (users) => {
     for (const user of users) {
 
     }
 });
 
-socket.on('user', (user) => {
-
+socket.on('connect', () => {
+    displayInfo('Connected, available commands: ');
+    for (const command of Object.keys(commands)) {
+        displayInfo(serializeCommand(command, commands[command]));
+    }
 });
 
 $('#send-input').on('keydown', function(e) {
@@ -43,9 +117,27 @@ $('#send-input').on('keydown', function(e) {
         const msg = $(this).val();
 
         if (msg.length > 0) {
-            socket.emit('message', msg);
+            if (msg[0] === '/') {
+                // process command
+                const s = msg.slice(1).split(' ');
+                const command = s[0];
+                const params = commands[command];
+
+                if (params && s.length - 1 === params.length) {
+                    displayInfo(msg);
+                    socket.emit(command, s.slice(1));
+                }
+                else {
+                    displayError(`Invalid Command: ${command}`);
+                }
+            }
+            else {
+                socket.emit('message', msg);
+            }
         }
 
         $(this).val('');
     }
 });
+
+displayInfo('Connecting...');
