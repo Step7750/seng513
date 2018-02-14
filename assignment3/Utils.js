@@ -1,15 +1,23 @@
-exports.getRandomNick = function() {
-    let digits = 7;
-
-    let nick = 'USER-';
+exports.genNumericSeq = function(digits) {
+    let seq = '';
 
     while (digits > 0) {
-        nick += Math.floor(Math.random()*10);
+        seq += Math.floor(Math.random()*10);
 
         digits -= 1;
     }
 
-    return nick;
+    return seq;
+};
+
+exports.genAlphanumericSeq = function(amt) {
+    let alphanum = '';
+
+    for (let i = 0; i < amt; i++) {
+        alphanum += Math.random().toString(36).substr(2, 1)
+    }
+
+    return alphanum;
 };
 
 exports.serializeSocket = function(s) {
